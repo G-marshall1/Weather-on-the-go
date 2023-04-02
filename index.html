@@ -20,84 +20,66 @@
     </header>
 
 
-<main>
-    <div class="container">
 
-                    <h1>Search for a City</h1>
-                    <form action="searchWeather" method="post">
-                        <label for="city">City</label>
-                        <input type="text" name="city" id="city">
-                        <input type="submit" value="Search">
-                    </form>
-                </aside>
+    <div class="col-3 bg-light p-3 border">
+
+        <h5>Search for a City:</h5>
+        <form class="form-inline" id="search-form">
+            <input type="search" class="form-control mb-3 ds-input" id="cityname" placeholder="Enter city name...">
+            <button type="submit" class="btn btn-primary mb-3"><span class="oi oi-magnifying-glass"></span></button>
+        </form>
+
+        <ul class="list-group" id="search-history">
+        </ul>
+
+    </div>
+
+
+    <div class="col-md-9">
+
+        <div class="card mt-2">
+            <div class="card-body">
+                <div class="d-flex flex-row ">
+                    <h2 class="card-title align-self-center" id="main-city-name"></h2> 
+                </div>
+                <h6 class="card-subtitle text-muted" id="main-city-temp">Temperature: </h6>
+                <h6 class="card-subtitle mt-3 text-muted" id="main-city-humid">Humidity: </h6>
+                <h6 class="card-subtitle mt-3 text-muted" id="main-city-wind">Wind Speed: </h6>
+                <h6 class="card-subtitle mt-3 text-muted" id="main-city-uv">UV Index: <span id="uv-box" class="px-2 py-1 mb-1 text-light rounded font-weight-normal"></span></h6>
+            </div>  
+        </div>
+        <div>
+            <h2 class="card-title mt-3">5-Day Forecast:</h2>
+            <div class="row justify-content-between" id="five-day">
+            </div>
+        </div>
+    </div>
 </div>
-                    <div class="col-9 bg-light p-3 border">
-                        <div class="row">
-                            <div class="col-12">
-                                <h2 id="city-name"></h2>
-                                <p id="current-date"></p>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-6">
-                                <div class="row">
-                                    <div class="col-12">
-                                        <p id="current-temp"></p>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-12">
-                                        <p id="current-humidity"></p>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-12">
-                                        <p id="current-wind"></p>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-12">
-                                        <p id="current-uv"></p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="row">
-                                    <div class="col-12">
-                                        <p id="current-weather"></p>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-12">
-                                        <p id="current-icon"></p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-12">
-                                <h3>5-Day Forecast:</h3>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-2">
-                                <p id="forecast-date-1"></p>
-                                <p id="forecast-icon-1"></p>
-                                <p id="forecast-temp-1"></p>
-                            </div>
-                            <div class="col-2">
-                                <p id="forecast-date-2"></p>
-                                <p id="forecast-icon-2"></p>
-                                <p id="forecast-temp-2"></p>
-                            </div>
-                            <div class="col-2">
-                                <p id="forecast-date-3"></p>
-                                <p id="forecast-icon-3"></p>
-                                <p id="forecast-temp-3"></p>
-                            </div>
+</div>
 
-                    </main>
-                    <script src="script.js"></script>
+    </div>
+
+    <!-- <aside>
+        <h1>Search for a City</h1>
+        <form action="searchWeather" method="post">
+            <label for="city">City</label>
+            <input type="text" name="city" id="city">
+            <input type="submit" value="Search">
+        </form>
+    </aside> -->
+
+
+
+    </main>
+
+    <script
+    src="https://cdn.jsdelivr.net/npm/dayjs@1.11.3/dayjs.min.js"
+    integrity="sha256-iu/zLUB+QgISXBLCW/mcDi/rnf4m4uEDO0wauy76x7U="
+    crossorigin="anonymous"
+  ></script>
+  
+    <script src="script.js"></script>
+   
 </body>
 
 </html>
