@@ -1,13 +1,168 @@
-header div {
-    padding: 10px;
-    text-align: center;
+* {
+    font-family: 'Poppins', sans-serif;
 }
 
-main {
+html {
+    margin: 0;
+    width: 100%;
+    padding: 0;
+}
+body {
+    background-color: rgb(202, 203, 208);
+}
+
+.title {
+    background-color: rgb(0, 4, 255);
+    color: white;
+    border: 10px solid rgb(0, 4, 255);
+}
+
+.container {
     display: flex;
 }
 
-main div {
-    padding: 10px;
-    flex: 1;
+h1 {
+    text-align: center;
+    padding: 5px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+} 
+
+h2 {
+    font-size: 25px;
+}
+
+.title {
+    width: 100%;
+    background-color: none;
+}
+
+#location {
+    font-size: 25px;
+    font-weight: bold;
+}
+
+#icon img {
+    height: 80px;
+    width: 80px;
+}
+
+.form-input {
+   width: 220px;
+   display: flex;
+   flex-direction: column;
+   justify-content: center;
+   align-items: center;
+}
+
+input:focus::placeholder {
+    color: transparent;
+  }
+
+.result-cont {
+    display: flex;
+    flex-direction: column;
+    margin-left: 5px;
+}
+
+.five-day {
+    display: flex;   
+}
+
+.weather-cont {
+    margin-left: 10px;
+}
+
+/* Removing margins from temp id */
+#temp, #humidity, #description {
+    margin: 0rem;
+}
+
+.fiveDay{
+    padding: 5px;
+    border-color: rgb(0, 238, 255);
+    margin-left: -1px;
+}
+
+/* #search-form {
+    display: flex;
+    flex-direction: column;
+} */
+
+.fa-solid {
+    position: absolute;
+}
+
+#search-input {
+    position: relative;
+    background-color: transparent;
+}
+
+.historySearchBtn {
+    background-color: rgb(44, 15, 162);
+    padding: 5px;
+    width: 220px;
+    height: 40px;
+    color: white;
+}
+
+.search-btn {
+    background-color: rgb(32, 110, 218);
+    width: 220px;
+    height: 40px;
+    color: rgb(240, 239, 242);
+    margin-bottom: 15px;
+    border-radius: 3px;
+}
+
+
+
+.clearHistory {
+    background-color: rgb(32, 110, 218);
+    width: 220px;
+    height: 40px;
+    color: rgb(247, 244, 244);
+    margin-bottom: 15px;
+    border-radius: 3px;
+}
+
+.card {
+    border-style: groove;
+    border-color: rgb(2, 96, 247);
+    border-width: 3px;
+}
+
+.cities-holder {
+    border-color: transparent;
+    background-color: transparent;
+}
+
+#current-date {
+    font-size: 18px;
+}
+
+.card-title {
+    font-size: 18px;
+}
+
+.flex {
+    display: flex;
+    flex-direction: row;
+}
+
+#daily-cont {
+    width: 225px;
+}
+
+#weather-pic img {
+    height: 268px;
+    width: 760px;
+    background-color:rgb(157, 156, 237);
+    border-bottom-style: groove;
+    border-bottom-color: rgb(50, 45, 46);
+    border-bottom-width: 3px;
+    border-left-style: groove;
+    border-left-color: rgb(50, 45, 46);
+    border-left-width: 3px;
+ 
 }

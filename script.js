@@ -1,180 +1,146 @@
-// array to hold the users search history
-let searchHistory = []
-let lastCitySearched = ""
+let locationEl = document.getElementById("location");
+let searchFormEl = document.getElementById("search-form");
+let currentDateEl = document.getElementById("current-date");
+let iconEl = document.getElementById("icon");
+let tempEl = document.getElementById("temp");
+let weatherDetailsEl = document.getElementById("weather-details");
+let humidityEl = document.getElementById("humidity");
+let windSpeedEl = document.getElementById("wind-speed");
+let uviEl = document.getElementById("uv-index");
+let extendedForecastEl = document.getElementsByClassName("five-day");
+let weatherPhotoEl = document.getElementById("weather-pic")
 
-// api call to openweathermap.org
-let getCityWeather = function(city) {
-    // format the OpenWeather api url
-    let apiUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=ce39e7239416ad754359ca762d28521a&units=imperial";
+let date1 = document.getElementById("date1");
+let historySearchBtn;
+let date2 = document.getElementById("date2");
+let date3 = document.getElementById("date3");
+let date4 = document.getElementById("date4");
+let date5 = document.getElementById("date5");
 
-    // make a request to the url
-    fetch(apiUrl)
-        
-        .then(function(response) {
-        // request was successful
-            if (response.ok) {
-                response.json().then(function(data) {
-                    displayWeather(data);
-                });
-            // request fails
-            } else {
-                alert("Error: " + response.statusText);
-            }
-        })  
 
-        // alert user if there is no responce from OpenWeather
-        .catch(function(error) {
-            alert("Unable to connect to OpenWeather");
-        })
-};
+// Using moment instead of dayjs because it's more popular and offers more reference material.
+currentDateEl.innerHTML = moment().format("MMMM Do, YYYY");
+date1.innerHTML = moment().add(1, "days").format("dddd <br>MM/DD");
+date2.innerHTML = moment().add(2, "days").format("dddd<br>MM/DD");
+date3.innerHTML = moment().add(3, "days").format("dddd<br>MM/DD");
+date4.innerHTML = moment().add(4, "days").format("dddd<br>MM/DD");
+date5.innerHTML = moment().add(5, "days").format("dddd<br>MM/DD");
 
-// function to handle city search form submit
-let searchSubmitHandler = function(event) {
-    // stop page from refreshing
-    event.preventDefault();
-
-    // get value from input element
-    let cityName = $("#cityname").val().trim();
-
-    // check if the search field has a value
-    if(cityName) {
-        // pass the value to getCityWeather function
-        getCityWeather(cityName);
-
-        // clear the search input
-        $("#cityname").val("");
-    } else {
-        // if nothing was entered alert the user
-        alert("Please enter a city name");
-    }
-};
-
-// function to display the information collected from openweathermap.org
-let displayWeather = function(weatherData) {
-
-    // format and display the values
-    $("#main-city-name").text(weatherData.name + " (" + dayjs(weatherData.dt * 1000).format("MM/DD/YYYY") + ") ").append(`<img src="https://openweathermap.org/img/wn/${weatherData.weather[0].icon}@2x.png"></img>`);
-    $("#main-city-temp").text("Temperature: " + weatherData.main.temp.toFixed(1) + "°F");
-    $("#main-city-humid").text("Humidity: " + weatherData.main.humidity + "%");
-    $("#main-city-wind").text("Wind Speed: " + weatherData.wind.speed.toFixed(1) + " mph");
-
-    // use lat & lon to make the uv api call
-    fetch("https://api.openweathermap.org/data/2.5/uvi?lat=" + weatherData.coord.lat + "&lon="+ weatherData.coord.lon + "&appid=ce39e7239416ad754359ca762d28521a")
-        .then(function(response) {
-            response.json().then(function(data) {
-
-                // display the uv index value
-                $("#uv-box").text(data.value);
-
-                // highlight the value using the EPA's UV Index Scale colors
-                if(data.value >= 11) {
-                    $("#uv-box").css("background-color", "#6c49cb")
-                } else if (data.value < 11 && data.value >= 8) {
-                    $("#uv-box").css("background-color", "#d90011")
-                } else if (data.value < 8 && data.value >= 6) {
-                    $("#uv-box").css("background-color", "#f95901")
-                } else if (data.value < 6 && data.value >= 3) {
-                    $("#uv-box").css("background-color", "#f7e401")
-                } else {
-                    $("#uv-box").css("background-color", "#299501")
-                }      
-            })
-        });
-
-    // five-day api call
-    fetch("https://api.openweathermap.org/data/2.5/forecast?q=" + weatherData.name + "&appid=ce39e7239416ad754359ca762d28521a&units=imperial")
-        .then(function(response) {
-            response.json().then(function(data) {
-
-                // clear any previous entries in the five-day forecast
-                $("#five-day").empty();
-
-                // get every 8th value (24hours) in the returned array from the api call
-                for(i = 7; i <= data.list.length; i += 8){
-
-                    // insert data into my day forecast card template
-                    let fiveDayCard =`
-                    <div class="col-md-2 m-2 py-3 card text-white bg-primary">
-                        <div class="card-body p-1">
-                            <h5 class="card-title">` + dayjs(data.list[i].dt * 1000).format("MM/DD/YYYY") + `</h5>
-                            <img src="https://openweathermap.org/img/wn/` + data.list[i].weather[0].icon + `.png" alt="rain">
-                            <p class="card-text">Temp: ` + data.list[i].main.temp + `</p>
-                            <p class="card-text">Humidity: ` + data.list[i].main.humidity + `</p>
-                        </div>
-                    </div>
-                    `;
-
-                    // append the day to the five-day forecast
-                    $("#five-day").append(fiveDayCard);
-               }
-            })
-        });
-
-    // save the last city searched
-    lastCitySearched = weatherData.name;
-
-    // save to the search history using the api's name value for consistancy
-    // this also keeps searches that did not return a result from populating the array
-    saveSearchHistory(weatherData.name);
-
-    
-};
-
-// function to save the city search history to local storage
-let saveSearchHistory = function (city) {
-    if(!searchHistory.includes(city)){
-        searchHistory.push(city);
-        $("#search-history").append("<a href='#' class='list-group-item list-group-item-action' id='" + city + "'>" + city + "</a>")
-    } 
-
-    // save the searchHistory array to local storage
-    localStorage.setItem("weatherSearchHistory", JSON.stringify(searchHistory));
-
-    // save the lastCitySearched to local storage
-    localStorage.setItem("lastCitySearched", JSON.stringify(lastCitySearched));
-
-    // display the searchHistory array
-    loadSearchHistory();
-};
-
-// function to load saved city search history from local storage
-let loadSearchHistory = function() {
-    searchHistory = JSON.parse(localStorage.getItem("weatherSearchHistory"));
-    lastCitySearched = JSON.parse(localStorage.getItem("lastCitySearched"));
-  
-    // if nothing in localStorage, create an empty searchHistory array and an empty lastCitySearched string
-    if (!searchHistory) {
-        searchHistory = []
-    }
-
-    if (!lastCitySearched) {
-        lastCitySearched = ""
-    }
-
-    // clear any previous values from th search-history ul
-    $("#search-history").empty();
-
-    // for loop that will run through all the citys found in the array
-    for(i = 0 ; i < searchHistory.length ;i++) {
-
-        // add the city as a link, set it's id, and append it to the search-history ul
-        $("#search-history").append("<a href='#' class='list-group-item list-group-item-action' id='" + searchHistory[i] + "'>" + searchHistory[i] + "</a>");
-    }
-  };
-
-// load search history from local storage
-loadSearchHistory();
-
-// start page with the last city searched if there is one
-if (lastCitySearched != ""){
-    getCityWeather(lastCitySearched);
+// Grabs the user input and assigns it to a letiable.
+function getCity() {
+  let city = document.getElementById("search-input").value;
+  return city;
 }
 
-// event handlers
-$("#search-form").submit(searchSubmitHandler);
-$("#search-history").on("click", function(event){
-    // get the links id value
-    let prevCity = $(event.target).closest("a").attr("id");
-    // pass it's id value to the getCityWeather function
-    getCityWeather(prevCity);
+function showSearchHistory() {
+  // Get the search history from localStorage
+  const searchHistory = JSON.parse(localStorage.getItem("searchHistory")) || [];
+
+  const historyContainer = document.querySelector(".cities-holder");
+  historyContainer.innerHTML = "";
+
+  // Only display the last 10 cities in the search history
+  const startIndex = Math.max(searchHistory.length - 10, 0);
+  const citiesToDisplay = searchHistory.slice(startIndex);
+
+  // Loop through the search history and create a button for each item:
+  for (let i = 0; i < citiesToDisplay.length; i++) {
+    let historyCity = citiesToDisplay[i];
+    const button = document.createElement("button");
+    button.textContent = historyCity;
+    button.classList.add("historySearchBtn");
+    // Pass the city name to the getWeather function when the button is clicked
+    button.addEventListener("click", function () {
+      getWeather(historyCity);
+    });
+    historyContainer.appendChild(button);
+  }
+}
+
+showSearchHistory();
+
+
+function getWeather(cityName) {
+  let searchHistory = JSON.parse(localStorage.getItem("searchHistory")) || [];
+  let newCity = cityName || getCity();
+  console.log(newCity);
+  searchHistory.push(newCity);
+  searchHistory.splice;
+  localStorage.searchHistory = JSON.stringify(searchHistory);
+  showSearchHistory();
+  let requestUrl = `https://api.openweathermap.org/data/2.5/weather?q=${newCity}&appid=63a94d459d52f9c7cb3b910e98b67749&units=imperial`;
+  fetch(requestUrl).then(function (response) {
+    if (response.ok) {
+      return response.json().then(function (data) {
+        console.log(data);
+
+        iconEl.innerHTML = `<img src="http://openweathermap.org/img/wn/${data.weather[0].icon}.png"/>`;
+
+        tempEl.innerHTML = `${Math.round(data.main.temp)}°F`;
+
+        weatherDetailsEl.innerHTML = `${data.weather[0].description}`;
+
+        locationEl.innerHTML = `${data.name}`;
+
+        humidityEl.innerHTML = `Humidity: ${data.main.humidity}%`;
+        windSpeedEl.innerHTML = `Wind Speed: ${Math.round(data.wind.speed)}mph`;
+
+       
+      
+      
+
+        // 2nd API call
+        let { lat, lon } = data.coord;
+        let coordUrl = `https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&exclude=hourly&units=imperial&appid=13e949235d9719a223ffce12e0abda18`;
+        fetch(coordUrl).then(function (response) {
+          if (response.ok) {
+            return response
+              .json()
+
+              .then(function (data) {
+                console.log(data);
+                for (let i = 0; i < data.daily.length; i++) {
+                  const dayData = data.daily[i];
+                
+                  // get references to the card elements
+                  const card = document.getElementById(`day-${i}`);
+                  const exIcon = card.querySelector(".card-icon");
+                  const exTemp = card.querySelector(".card-temp");
+                  const exDescription = card.querySelector(".card__description");
+                  const exHum = card.querySelector(".card-hum");
+                
+                  // populate the card elements with data from the API
+                  exIcon.innerHTML = `<img src="http://openweathermap.org/img/w/${dayData.weather[0].icon}.png">`;
+                  exTemp.textContent = `${Math.round(dayData.temp.day)}°F`;
+                  exDescription.textContent = dayData.weather[0].description;
+                  exHum.textContent = `Humidity: ${dayData.humidity}%`;
+                }
+             
+              });
+          }
+        });
+      });
+    }
+  });
+}
+// 1st API call when the page loads
+window.addEventListener("load", function() {
+  getWeather("Salt Lake City");
 });
+
+// 1st API call when the user submits the form
+searchFormEl.addEventListener("submit", function (event) {
+  event.preventDefault();
+  getWeather();
+});
+
+// use moment to get the current date
+currentDateEl = moment().format("LL");
+
+// clear the search history
+var clearHistory = document.getElementById("clear-history");
+clearHistory.addEventListener("click", function () {
+    localStorage.clear();
+    showSearchHistory();
+    }
+);
