@@ -68,7 +68,7 @@ function getWeather(cityName) {
   searchHistory.splice;
   localStorage.searchHistory = JSON.stringify(searchHistory);
   showSearchHistory();
-  let requestUrl = `https://api.openweathermap.org/data/2.5/weather?q=${newCity}&appid=63a94d459d52f9c7cb3b910e98b67749&units=imperial`;
+  let requestUrl = `https://api.openweathermap.org/data/2.5/weather?q=${newCity}&appid=4ce3c2e7893f384091af8f6cd9bd9fec&units=imperial`;
   fetch(requestUrl).then(function (response) {
     if (response.ok) {
       return response.json().then(function (data) {
