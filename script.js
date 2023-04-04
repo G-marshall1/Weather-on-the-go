@@ -91,7 +91,7 @@ function getWeather(cityName) {
 
         // 2nd API call
         let { lat, lon } = data.coord;
-        let coordUrl = `https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&exclude=hourly&units=imperial&appid=13e949235d9719a223ffce12e0abda18`;
+        let coordUrl = `https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&exclude=hourly&units=imperial&appid=4ce3c2e7893f384091af8f6cd9bd9fec`;
         fetch(coordUrl).then(function (response) {
           if (response.ok) {
             return response
