@@ -17,7 +17,7 @@
 
 ## Installation
 
-No installation needed since it is a landing page that can be viewed here 
+No installation needed since it is a landing page that can be viewed here https://g-marshall1.github.io/Weather-on-the-go/
 
 ## Usage
 Current weather conditions for a specified location
@@ -25,8 +25,8 @@ Five-day forecast for the specified location
 Temperature, humidity, wind speed, and UV index data
 Option to toggle between Fahrenheit and Celsius units
 User-friendly interface
-![03-Demo](https://user-images.githubusercontent.com/122425742/225156709-8f7b2316-8c3e-444d-917d-d220ac08c926.png)
 
+![Your-Weather-Dashboard](https://user-images.githubusercontent.com/122425742/229697056-d4e0155c-9ec8-4efb-93d5-62135a05f222.png)
 
 
 
